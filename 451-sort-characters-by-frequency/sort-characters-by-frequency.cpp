@@ -8,7 +8,7 @@ public:
     }
      priority_queue<pair<int,char>>pq;
 
-     for(auto p: count){
+     for(auto &p: count){
         pq.push({p.second,p.first});
      }
 
