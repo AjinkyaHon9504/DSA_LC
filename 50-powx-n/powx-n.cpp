@@ -1,25 +1,22 @@
-
-
-    class Solution {
+class Solution {
 public:
     double myPow(double x, int n) {
-        // Base case
-        if (n == 0) return 1;
+        long long N = n; // To safely handle INT_MIN
 
-        // Handle negative power safely using long
-        long long N = n;
         if (N < 0) {
             x = 1 / x;
-            N = -N; // Convert to positive
+            N = -N;
         }
 
-        return fastPow(x, N);
+        return power(x, N);
     }
 
-private:
-    double fastPow(double x, long long n) {
+    double power(double x, long long n) {
         if (n == 0) return 1;
-        double half = fastPow(x, n / 2);
+        if (n == 1) return x;
+
+        double half = power(x, n / 2);
+
         if (n % 2 == 0)
             return half * half;
         else
