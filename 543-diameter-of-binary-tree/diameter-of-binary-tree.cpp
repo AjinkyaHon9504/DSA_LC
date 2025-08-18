@@ -11,23 +11,22 @@
  */
 class Solution {
 public:
-int maxDiameter = 0;
+    int diameter = 0;
 
-    int dfs(TreeNode* node) {
-        if (!node) return 0;
+    int depth(TreeNode* root) {
+        if (!root) return 0;
 
-        int leftHeight = dfs(node->left);
-        int rightHeight = dfs(node->right);
+        int left = depth(root->left);
+        int right = depth(root->right);
 
-        // Update diameter at this node
-        maxDiameter = max(maxDiameter, leftHeight + rightHeight);
+        // update global diameter (edges = nodes - 1)
+        diameter = max(diameter, left + right);
 
-        // Return height
-        return 1 + max(leftHeight, rightHeight);
+        return 1 + max(left, right); // return height of subtree
     }
 
     int diameterOfBinaryTree(TreeNode* root) {
-         dfs(root);
-        return maxDiameter;
+        depth(root);
+        return diameter;
     }
 };
