@@ -14,13 +14,12 @@ public:
     vector<int> result;
     void righttree(TreeNode *root,int depth){
        if (!root) return;
-       if (depth == result.size()) result.push_back(root->val);
+       if (depth == result.size()) result.push_back(root->val);// unused depth
        righttree(root->right, depth + 1);
        righttree(root->left, depth + 1);  
 
     }
     vector<int> rightSideView(TreeNode* root) {
-     
         righttree(root,0);
         return result;
     }
