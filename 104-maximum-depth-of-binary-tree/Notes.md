@@ -1,1 +1,1 @@
-<h2>maximum-depth-of-binary-tree Notes</h2><hr>[ Time taken: 1 hr 15 m 16 s ]
+<h2>maximum-depth-of-binary-tree Notes</h2><hr>[ Time taken: 8 hrs 20 m 27 s ]
