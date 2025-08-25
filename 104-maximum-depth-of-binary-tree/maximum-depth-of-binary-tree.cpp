@@ -11,12 +11,12 @@
  */
 class Solution {
 public:
-vector<int> result;
- 
     int maxDepth(TreeNode* root) {
-        //base case for size=1 depth =1
-        if (!root) return 0;
-        return 1 + max(maxDepth(root->left), maxDepth(root->right));
+        
+        if (!root) return 0;  // Base case: empty tree
+        int leftDepth = maxDepth(root->left);
+        int rightDepth = maxDepth(root->right);
+        return 1 + max(leftDepth, rightDepth);
+
     }
- 
 };
