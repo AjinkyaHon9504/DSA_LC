@@ -10,12 +10,24 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if (!root || root == p || root == q) return root;
+        //base case
+        if(root==NULL || root == p || root == q){
+            return root;
+        }
 
-        TreeNode* left = lowestCommonAncestor(root->left, p, q);
-        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* right= lowestCommonAncestor(root->right,p,q);
 
-        if (left && right) return root;       // p and q found in different subtrees
-        return left ? left : right; 
+        //resulty
+        if(left==NULL){
+            return right;
+        }
+        else if(right==NULL){
+            return left;
+        }
+        else{
+            //both ledt and righr are not null , we found our result
+            return root;
+        }
     }
 };
