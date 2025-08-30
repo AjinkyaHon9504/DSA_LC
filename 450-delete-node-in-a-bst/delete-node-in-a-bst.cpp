@@ -1,65 +1,33 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-
-
     TreeNode* deleteNode(TreeNode* root, int key) {
-        if(root == NULL){
-            return NULL;
-        }
-        if( root->val == key){
-            return helper(root);
-        }
-        TreeNode *dummy = root;
-        while(root){
-            if(root->val > key){
-                if(root->left != NULL && root->left->val == key){
-                    root->left = helper(root->left);
-                    break;
-                }
-                else{
-                    root=root->left;
-                }}
-                else{
-                    if(root->right != NULL && root->right->val ==key){
-                        root->right = helper(root->right);
-                        break;
-                    }
-                    else{
-                        root=root->right;
-                    }
-                }
-            }
-            return dummy;
+        if (!root) return nullptr;
 
+        if (key < root->val) {
+            root->left = deleteNode(root->left, key);
         }
-            TreeNode* helper(TreeNode* root){
-                if(root->left == NULL){
-                    return root->right;
-                }
-                else if(root->right == NULL){
-                    return root->left;
-                }
-                TreeNode* rightChild = root->right;
-                TreeNode* lastRight = findLastRight(root->left);
-                lastRight->right = rightChild;
-                return root->left;
-            }
-            TreeNode* findLastRight(TreeNode *root){
-                if(root->right == NULL){
-                    return root;
-                }
-                return findLastRight(root->right);
-            }
-    
+        else if (key > root->val) {
+            root->right = deleteNode(root->right, key);
+        }
+        else { // Found the node to delete
+            // Case 1: No left child
+            if (!root->left) return root->right;
+
+            // Case 2: No right child
+            else if (!root->right) return root->left;
+
+            // Case 3: Two children → find inorder successor
+            TreeNode* successor = findMin(root->right);
+            root->val = successor->val;
+            root->right = deleteNode(root->right, successor->val);
+        }
+
+        return root;
+    }
+
+private:
+    TreeNode* findMin(TreeNode* node) {
+        while (node && node->left) node = node->left;
+        return node;
+    }
 };
