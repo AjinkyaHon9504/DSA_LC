@@ -1,18 +1,21 @@
 class Solution {
 public:
+
     vector<vector<int>>result;
-    void pairs(vector<int> &nums ,vector<int> &current , int index){
-        result.push_back(current);        //declaring or printing
-        int n=nums.size();
-        for(int i=index;i<n;i++){
-            current.push_back(nums[i]);
-            pairs(nums,current,i+1);
-            current.pop_back();
+    void solve(int i,vector<int>&nums,vector<int>&temp){
+        if( i>= nums.size()){
+            result.push_back(temp);
+            return;
         }
-   }
+
+        temp.push_back(nums[i]);
+        solve(i+1,nums,temp);
+        temp.pop_back();
+        solve(i+1,nums,temp);
+    }
     vector<vector<int>> subsets(vector<int>& nums) {
-        vector<int>current;
-        pairs(nums,current,0);              //starting index from zero then increasing it 
+        vector<int> temp;
+        solve(0,nums,temp);
         return result;
     }
 };
