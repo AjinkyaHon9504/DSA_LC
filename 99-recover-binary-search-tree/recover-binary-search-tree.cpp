@@ -1,50 +1,40 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
-    TreeNode* first;
-    TreeNode* prev;
-    TreeNode* middle;
-    TreeNode* last;
-   
 public:
- void inorder(TreeNode* root){
-        if(root ==NULL) return;
-    
 
-    inorder(root->left);
+    TreeNode* first = NULL;
+    TreeNode* second = NULL;
+    TreeNode* prev = NULL;
 
-    if(prev!=NULL && (root->val < prev->val)){
-        if(first==NULL){
-            first = prev;
-            middle=root;
+    void inorder(TreeNode* root) {
+
+        if (!root) return;
+
+        // Step 1: Traverse left
+        inorder(root->left);
+
+        // Step 2: Check violation
+        if (prev && prev->val > root->val) {
+
+            // First violation
+            if (!first)
+                first = prev;
+
+            // Second violation
+            second = root;
         }
-        else{
-            last = root;
-        }
-    }
-        prev= root;
+
+        // Step 3: Update prev
+        prev = root;
+
+        // Step 4: Traverse right
         inorder(root->right);
     }
-    
+
     void recoverTree(TreeNode* root) {
-        first=middle=last=NULL;
-        prev= new TreeNode(INT_MIN);
+
         inorder(root);
-        if(first&&last){
-            swap(first->val , last->val);}
-            else if(first && middle) swap(first->val,middle->val);
-        
+
+        // Step 5: Swap incorrect nodes
+        swap(first->val, second->val);
     }
 };
-
-//root->left < root < root->right
-//heap 
