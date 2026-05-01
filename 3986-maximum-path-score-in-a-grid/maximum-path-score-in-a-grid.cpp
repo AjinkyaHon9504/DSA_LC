@@ -4,32 +4,7 @@ public:
 
     int getval(int x){
         if(x == 0) return 0;
-        if(x == 1 || x == 2) return 1;
-        return 0;
-    }
-
-    int solve(int i, int j, int cost, vector<vector<int>>& grid, int k,
-              vector<vector<vector<int>>>& dp) {
-
-        if(i >= m || j >= n) return INT_MIN;
-
-        int newcost = cost + getval(grid[i][j]);
-
-        if(newcost > k) return INT_MIN;
-
-        if(i == m-1 && j == n-1)
-            return grid[i][j];
-
-        if(dp[i][j][newcost] != -1)
-            return dp[i][j][newcost];
-
-        int right = solve(i, j+1, newcost, grid, k, dp);
-        int down = solve(i+1, j, newcost, grid, k, dp);
-
-        if(right == INT_MIN && down == INT_MIN)
-            return dp[i][j][newcost] = INT_MIN;
-
-        return dp[i][j][newcost] = max(right, down) + grid[i][j];
+        return 1;
     }
 
     int maxPathScore(vector<vector<int>>& grid, int k) {
@@ -37,11 +12,39 @@ public:
         n = grid[0].size();
 
         vector<vector<vector<int>>> dp(
-            m, vector<vector<int>>(n, vector<int>(k+1, -1))
+            m, vector<vector<int>>(n, vector<int>(k+1, INT_MIN))
         );
 
-        int result = solve(0, 0, 0, grid, k, dp);
+        // Base case: destination
+        for(int cost = 0; cost <= k; cost++){
+            int newcost = cost + getval(grid[m-1][n-1]);
 
-        return result == INT_MIN ? -1 : result;
+            if(newcost <= k)
+                dp[m-1][n-1][cost] = grid[m-1][n-1];
+        }
+
+        for(int i = m-1; i >= 0; i--){
+            for(int j = n-1; j >= 0; j--){
+
+                if(i == m-1 && j == n-1) continue;
+
+                for(int cost = 0; cost <= k; cost++){
+
+                    int newcost = cost + getval(grid[i][j]);
+
+                    if(newcost > k) continue;
+
+                    int right = (j+1 < n) ? dp[i][j+1][newcost] : INT_MIN;
+                    int down  = (i+1 < m) ? dp[i+1][j][newcost] : INT_MIN;
+
+                    if(right == INT_MIN && down == INT_MIN)
+                        continue;
+
+                    dp[i][j][cost] = max(right, down) + grid[i][j];
+                }
+            }
+        }
+
+        return dp[0][0][0] == INT_MIN ? -1 : dp[0][0][0];
     }
 };
