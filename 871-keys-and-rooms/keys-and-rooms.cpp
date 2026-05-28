@@ -1,25 +1,24 @@
 class Solution {
 public:
-    bool canVisitAllRooms(vector<vector<int>>& rooms) {
-        int n=rooms.size();
-        stack<int> st;
-        vector<bool> vis(n,false);
-        st.push(0);
-        vis[0]=true;
 
-        while(!st.empty()){
-            int room = st.top();
-            st.pop();
-
-            for(int key : rooms[room]){  // keys in current room
-                if (!vis[key]) {           // if not visited
-                    vis[key] = true;
-                    st.push(key);          // push onto stack
-                }
+    void dfs(vector<vector<int>>&rooms,int source,vector<bool>&visited){
+        visited[source]= true;
+        for(int &it : rooms[source]){    // 0 ke lie it  = 1 and 3 
+            if(!visited[it]){
+                dfs(rooms,it,visited);
             }
-        }for (bool v : vis) {
-            if (!v) return false;
+        }
+        }
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        int n = rooms.size();
+        vector<bool>visited(n,false);
+        dfs(rooms,0,visited);
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                return false;
+            }
         }
         return true;
+        
     }
 };
