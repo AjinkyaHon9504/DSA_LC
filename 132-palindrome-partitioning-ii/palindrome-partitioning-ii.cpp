@@ -2,11 +2,15 @@ class Solution {
 public:
 
     bool isPalindrome(string &s, int l, int r) {
-        while(l < r) {
-            if(s[l] != s[r]) return false;
+
+        while (l < r) {
+            if (s[l] != s[r]) {
+                return false;
+            }
             l++;
             r--;
         }
+
         return true;
     }
 
@@ -14,22 +18,27 @@ public:
 
         int n = s.size();
 
-        if(i == n) return 0;
+        if (i == n) {
+            return -1;
+        }
 
-        if(dp[i] != -1) return dp[i];
+        if (dp[i] != -1) {
+            return dp[i];
+        }
 
-        int ans = INT_MAX;
+        int mincost = INT_MAX;
 
-        for(int j = i; j < n; j++) {
+        for (int j = i; j < n; j++) {
 
-            if(isPalindrome(s, i, j)) {
+            if (isPalindrome(s, i, j)) {
 
-                ans = min(ans,
-                          1 + solve(j + 1, s, dp));
+                int cost = 1 + solve(j + 1, s, dp);
+
+                mincost = min(mincost, cost);
             }
         }
 
-        return dp[i] = ans;
+        return dp[i] = mincost;
     }
 
     int minCut(string s) {
@@ -38,6 +47,6 @@ public:
 
         vector<int> dp(n, -1);
 
-        return solve(0, s, dp) - 1;
+        return solve(0, s, dp);
     }
 };
