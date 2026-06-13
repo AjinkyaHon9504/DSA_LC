@@ -1,25 +1,36 @@
 class Solution {
 public:
-    vector<vector<int>> result;
-     void backtrack(vector<int>& candidates,vector<int>& current, int index, int remainingSum){
+    vector<vector<int>> ans;
+    vector<int> temp;
 
-        if(remainingSum ==0){
-            result.push_back(current);
+    void solve(int i, vector<int>& candidates, int target) {
+
+        if(target == 0) {
+            ans.push_back(temp);
             return;
         }
-        if(remainingSum<0){
-            return;
-        } 
-        for(int i = index; i < candidates.size(); i++) {
-        current.push_back(candidates[i]);                     // choose
-        backtrack(candidates,current, i, remainingSum - candidates[i]);  // reuse same index
-        current.pop_back();                     
-        }
 
+        if(i >= candidates.size() || target < 0)
+            return;
+
+        // Take
+        temp.push_back(candidates[i]);
+
+        solve(i,
+              candidates,
+              target - candidates[i]);
+
+        temp.pop_back();
+
+        // Not Take
+        solve(i + 1,
+              candidates,
+              target);
     }
+
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> current;
-        backtrack(candidates,current,0, target);
-        return result;
+
+        solve(0, candidates, target);
+        return ans;
     }
 };
