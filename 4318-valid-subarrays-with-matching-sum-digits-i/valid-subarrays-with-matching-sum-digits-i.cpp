@@ -1,39 +1,29 @@
 class Solution {
 public:
-
-    
     int countValidSubarrays(vector<int>& nums, int x) {
         int n = nums.size();
-        int count=0;
-        vector<long long> sums;
+        int count = 0;
 
         for(int i = 0; i < n; i++) {
-          long long curr = 0;
+            long long curr = 0;
 
-         for(int j = i; j < n; j++) {
-          curr += nums[j];
-          sums.push_back(curr);
-          }
-         }
+            for(int j = i; j < n; j++) {
+                curr += nums[j];
 
-        
-        for(int i=0;i<sums.size();i++){
-        long long target = sums[i];
-        long long temp = abs(target);
+                long long temp = curr;
 
-        int lastDigit = temp % 10;
+                int lastDigit = temp % 10;
 
-        while(temp >= 10)
-        temp /= 10;
+                while(temp >= 10)
+                    temp /= 10;
 
-            int firstDigit = temp;
+                int firstDigit = temp;
 
-        if(firstDigit == x && lastDigit == x)
-        count++;
+                if(firstDigit == x && lastDigit == x)
+                    count++;
+            }
         }
-       
+
         return count;
-
-
     }
 };
