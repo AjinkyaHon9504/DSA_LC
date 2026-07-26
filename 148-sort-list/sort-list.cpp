@@ -11,52 +11,46 @@
 class Solution {
 public:
 
-    ListNode* middle(ListNode * head){
-        ListNode *slow=head;
-        ListNode *fast= head->next;
-
-        while(fast!=NULL && fast->next!=NULL){
-            slow=slow->next;
-            fast=fast->next->next;
-        }
-        return slow;
-    }
-
-    ListNode* merge(ListNode *l1,ListNode* l2){
-
-        ListNode dummy(-1);
-        ListNode* tail = &dummy;
-
-        while(l1 && l2){
-            if(l1->val < l2->val){
-                tail->next = l1;
-                l1=l1->next;
+    ListNode* merge(ListNode*right,ListNode*left){
+        ListNode dummy(0);
+        ListNode* curr = &dummy;
+        while(right && left){
+            if(left->val <= right->val){
+                curr->next = left;
+                left=left->next;
             }
             else{
-                tail->next = l2;
-                l2=l2->next;
+                curr->next=right;
+                right=right->next;
             }
-            tail=tail->next;
+            curr=curr->next;
+
 
         }
-
-        if(l1) tail->next = l1;
-        if(l2) tail->next = l2;
-
+        if(left){
+            curr->next=left;
+        }
+        if(right){
+            curr->next=right;
+        }
         return dummy.next;
     }
     ListNode* sortList(ListNode* head) {
-        if(head==NULL || head->next==NULL){
-            return head;
+        if(head==NULL || head->next == NULL) return head;
+
+        ListNode * slow = head;
+        ListNode * fast = head->next;
+
+        while(fast && fast->next){
+            slow=slow->next;
+            fast=fast->next->next;
         }
+        ListNode*mid=slow->next;
+        slow->next=NULL;
 
-        ListNode *mid = middle(head);
-        ListNode *right = mid->next;
-        mid->next =NULL;
+        ListNode*left=sortList(head);
+        ListNode*right=sortList(mid);
 
-        ListNode *left = sortList(head);
-        ListNode * rightnode = sortList(right);
-
-        return merge(left,rightnode);
+        return merge(left,right);
     }
 };
