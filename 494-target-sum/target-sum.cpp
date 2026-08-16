@@ -1,34 +1,34 @@
 class Solution {
 public:
+
+    int solve(vector<int>& nums,int i,int target,vector<vector<int>>&dp){
+        
+        if(i==nums.size()){
+            return target == 0;
+        }
+
+        if(dp[i][target]!=-1){
+            return dp[i][target];
+        }
+        int notTake = solve(nums,i+1,target,dp);
+        int take=0;
+        if(nums[i]<=target){
+            take+=solve(nums,i+1,target-nums[i],dp);
+        }
+        return dp[i][target]=take+notTake;
+    }
     int findTargetSumWays(vector<int>& nums, int target) {
         int n = nums.size();
-        int totalsum=0;
-        for(int i=0;i<n;i++){
-            totalsum+=nums[i];
-        }
-
-        if(abs(target)>totalsum || (target + totalsum)%2 !=0){
+        int total = accumulate(nums.begin(),nums.end(),0);
+        //2p = target + total
+        if(abs(target)>total){
             return 0;
         }
-
-        int Psum = (target+totalsum)/2;
-
-        vector<vector<int>> dp(n+1,vector<int>(Psum+1,0));
-        dp[0][0]=1;
-
-        
-
-        for(int i=1;i<=n;i++){
-            for(int j=0;j<=Psum;j++){
-                if(nums[i-1]<=j){
-                    dp[i][j] = dp[i-1][j-nums[i-1]] + dp[i-1][j];
-                }
-                else{
-                    dp[i][j] = dp[i-1][j];
-                }
-            }
-
+        if((target + total)%2!=0){
+            return 0;
         }
-        return dp[n][Psum];
+        int finaltarget = (target+total)/2;
+        vector<vector<int>>dp(n,vector<int>(finaltarget+1,-1));
+        return solve(nums,0,finaltarget,dp);
     }
 };
