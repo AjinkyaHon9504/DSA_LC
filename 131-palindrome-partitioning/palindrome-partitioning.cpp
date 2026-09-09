@@ -1,36 +1,36 @@
 class Solution {
 public:
- vector<vector<string>> result; 
+    vector<vector<string>>ans;
+    bool ispalindrome(string s,int start,int end){
 
-  bool isPalindrome(const string &s, int left, int right) {
-    while(right>left){
-        if(s[left]!=s[right]) return false;
-        left++;
-        right--;
-    }
-    return true;
-  }
-    void backtrack(string &s,vector<string> &current,int index){
-      if (index == s.size()) {
-            result.push_back(current); 
+        while(end>start){
+            if(s[start]!=s[end]){
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+        
+        
+        }
+
+    void backtrack(string &s,vector<string>&curr,int index){
+        if(index==s.size()){
+            ans.push_back(curr);
             return;
         }
-       for (int end = index; end < s.size(); ++end) {
-            if (isPalindrome(s, index, end)) {
-                current.push_back(s.substr(index, end - index + 1));
-                backtrack(s,current,end + 1);
-                current.pop_back();
-            }
+        for(int i=index;i<s.size();i++){
+            if(ispalindrome(s,index,i)){
+            curr.push_back(s.substr(index,i-index+1));
+            backtrack(s,curr,i+1);
+            curr.pop_back();
         }
     }
-    
+    };
     vector<vector<string>> partition(string s) {
-        vector<string> current;
-        backtrack(s,current,0);
-        return result;
+        vector<string>curr;
+        backtrack(s,curr,0);
+        return ans;
     }
 };
-
-
-
-
