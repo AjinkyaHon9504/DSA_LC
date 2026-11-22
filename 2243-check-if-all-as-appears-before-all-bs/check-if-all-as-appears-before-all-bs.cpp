@@ -1,15 +1,18 @@
+
 class Solution {
 public:
     bool checkString(string s) {
-        int n = s.length();
-        int count =0;
+        bool seenB = false;
 
-        for(int i=0;i<n-1;i++){
-            if(s[i]=='b' && s[i+1]=='a'){
+        for (char c : s) {
+            if (c == 'b') {
+                seenB = true;
+            }
+            else if (seenB) {
                 return false;
             }
-
         }
+
         return true;
     }
 };
